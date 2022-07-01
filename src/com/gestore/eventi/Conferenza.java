@@ -37,7 +37,7 @@ public class Conferenza extends Evento {
 	@Override
 	public String toString() {
 		
-		return super.toString() + "\nTitolo Oratore: " + oratoreDellaConferenza.getTitolo() + "\nNome Oratore: " + oratoreDellaConferenza.stampaNomeCognome() + "\nArgomento: " + getArgomentoDellaConferenza();
+		return super.toString() + " Titolo Oratore: " + oratoreDellaConferenza.getTitolo() + " Nome Oratore: " + oratoreDellaConferenza.stampaNomeCognome() + " Argomento: " + getArgomentoDellaConferenza();
 		
 	}
 	

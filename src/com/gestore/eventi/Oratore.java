@@ -59,7 +59,7 @@ public class Oratore {
 	//Metodo di stampa di nome e cognome dell'Oratore.
 	public String stampaNomeCognome() {
 		
-		return nome + cognome;
+		return nome + " " + cognome;
 		
 	}
 

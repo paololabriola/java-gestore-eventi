@@ -152,7 +152,7 @@ public class Evento {
 	@Override
 	public String toString() {
 		
-		return "Nome Evento: " + getTitoloEvento() + "\nData Evento: " + formattaData(getDataEvento()) ;
+		return "\nNome Evento: " + getTitoloEvento() + " Data Evento: " + formattaData(getDataEvento()) ;
 		
 	}
 	

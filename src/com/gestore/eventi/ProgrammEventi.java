@@ -70,18 +70,17 @@ public class ProgrammEventi extends CompareTo{
 		List<Evento> listaEventiProssimi = new ArrayList<Evento>();
 		List<Evento> listaEventiFuturi = new ArrayList<Evento>();
 		
-	    for(int i=0;i<listaEventi.size();i++) {
+	    for(int i = 0; i < listaEventi.size(); i++) {
 	    		
-	    	
-			long giorni = LocalDate.now().until(listaEventi.get(i).getDataEvento(), ChronoUnit.DAYS);
+			int giorni = (int) LocalDate.now().until(listaEventi.get(i).getDataEvento(), ChronoUnit.DAYS);
 
-			if (giorni < 31)
+			if (giorni < 30)
 					listaEventiProssimi.add(listaEventi.get(i));
 			else
 					listaEventiFuturi.add(listaEventi.get(i));
 	    }
 		
-	    System.out.println("Eventi nel prossimo mese: ");
+	    System.out.println("Eventi nel prossimo mese:");
 	    System.out.println(listaEventiProssimi);
 	    System.out.println("Eventi futuri:");
 	    System.out.println(listaEventiFuturi);
