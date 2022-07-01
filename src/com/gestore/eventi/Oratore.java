@@ -4,8 +4,13 @@ public class Oratore {
 	//ATTRIBUTI della classe Oratore.
 	String nome, cognome, titolo;
 	//COSTRUTTORE della classe Oratore.
-	public Oratore(String nome, String cognome, String titolo) {
+	public Oratore(String nome, String cognome, String titolo) throws NullPointerException {
+		
 		super();
+		
+		validaStringa(nome);
+		validaStringa(cognome);
+		validaStringa(titolo);
 		
 		this.nome = nome;
 		this.cognome = cognome;
@@ -45,13 +50,13 @@ public class Oratore {
 		this.titolo = titolo;
 	}
 	//Metodo di controllo in caso di stringa vuota.
-	private void validaStringa(String stringa) {
+	private void validaStringa(String stringa) throws NullPointerException{
 		
 		if(stringa.isBlank() || stringa==null)
 			throw new NullPointerException("La stringa deve avere un valore.");
 		
 	}
-	
+	//Metodo di stampa di nome e cognome dell'Oratore.
 	public String stampaNomeCognome() {
 		
 		return nome + cognome;
