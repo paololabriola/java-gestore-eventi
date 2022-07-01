@@ -84,10 +84,10 @@ public class Evento {
 	//Metodo di validazione di una stringa con lancio di errore in caso di valore null.
 	private void validaStringa(String stringa) throws NullPointerException {
 		
-		    if (stringa == null) 
-		      throw new NullPointerException("Il valore non può essere null");
+		    if (stringa.isBlank() || stringa==null) 
+		      throw new NullPointerException("La stringa deve avere un valore.");
 		    
-		  }
+	}
 	//Metodo di validazione di una data con lancio di un errore in caso di data null o precedente alla data corrente.
 	private void validaData(LocalDate data) throws NullPointerException, IllegalArgumentException {
 		
@@ -107,14 +107,12 @@ public class Evento {
 		
 	}
 	//Metodo di prenotazione di un biglietto per l'evento in una certa data.
-	public void prenota(LocalDate data, int prenotazioni) throws IllegalArgumentException {
-		//Controllo della data qualora fosse una data null o passata.
-		validaData(data);
-		//Controllo della data affinché non sia una data successiva all'evento.
-		if(data.isAfter(dataEvento))
+	public void prenota(int prenotazioni) throws IllegalArgumentException {
+		//Controllo affinché la data di creazione del biglietto non sia una data successiva all'evento.
+		if((LocalDate.now()).isAfter(dataEvento))
 			throw new IllegalArgumentException("L'evento è già passato, non è possibile prenotare un posto per questo evento.");
 		//Controllo disponibilità di posti prenotabili.
-		if(prenotazioni > postiTotali) 
+		if(prenotazioni > postiDisponibili()) 
 			throw new IllegalArgumentException("Non ci sono abbastanza posti per questo evento, i posti disponibili sono solo " + postiDisponibili());
 		else {
 			//Stampa in caso di prenotazione riuscita con successo e incremento della variabile che tiene il conto dei posti prenotati.
@@ -125,11 +123,9 @@ public class Evento {
 		
 	}
 	//Metodo di disdetta di un biglietto per l'evento in una certa data.
-	public void disdici(LocalDate data, int prenotazioniDisdette) throws IllegalArgumentException {
-		//Controllo della data qualora fosse una data null o passata.
-		validaData(data);
-		//Controllo della data affinché non sia una data successiva all'evento.
-		if(data.isAfter(dataEvento))
+	public void disdici(int prenotazioniDisdette) throws IllegalArgumentException {
+		//Controllo affinché la data in cui dsdici il biglietto non sia una data successiva all'evento.
+		if((LocalDate.now()).isAfter(dataEvento))
 			throw new IllegalArgumentException("L'evento è già passato, non è possibile prenotare un posto per questo evento.");
 		//Controllo nel caso in cui non ci fossero prenotazioni da disdire.
 		if(postiPrenotati == 0) 

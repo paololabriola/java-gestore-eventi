@@ -9,9 +9,9 @@ public class Main {
 		
 		Scanner scan = new Scanner(System.in);
 		
-		LocalDate dataEvento = null, dataOdierna = null;
+		LocalDate dataEvento = null;
 		Evento evento1 = null;
-		boolean flag = false;
+		boolean flag = false, chiudiProgramma = false;
 		
 		do {
 			
@@ -59,103 +59,122 @@ public class Main {
 			
 		}while(!flag);
 		
-		int numeroPrenotazioni = 0;
-		flag = false;
-		
 		do {
 			
-			try {
+			int opzione;
+			
+			do {
+			
+				System.out.println("Inserisci: \n1. se vuoi effettuare delle prenotazioni\n2. se vuoi disdire delle prenotazioni\n3. se vuoi chiudere il programma.");
+				System.out.print("Scelta: ");
+				opzione = Integer.parseInt(scan.nextLine());
+			
+				if(opzione != 1 && opzione != 2 && opzione != 3)
+					System.out.println("Inserire un valore valido.");
 				
-				System.out.print("Quante prenotazioni vuole effettuare? ");
-				numeroPrenotazioni = Integer.parseInt(scan.nextLine());
+			}while(opzione != 1 && opzione != 2 && opzione != 3);
 				
-				System.out.println("Inserire la data di oggi.");
-				
-				System.out.print("Inserisci il giorno: ");
-				int giorno = Integer.parseInt(scan.nextLine());
-				System.out.print("Inserisci il mese: ");
-				int mese = Integer.parseInt(scan.nextLine());
-				System.out.print("Inserisci l'anno: ");
-				int anno = Integer.parseInt(scan.nextLine());
-				
-				try {
-				
-					dataOdierna = LocalDate.of(anno, mese, giorno);
+			switch(opzione) {
+			
+				case 1: 
 					
-				} catch (Exception e) {
+					int numeroPrenotazioni = 0;
+					flag = false;
 					
-					System.out.println("Data non valida.");
+					do {
+						
+						try {
+							
+							System.out.print("Quante prenotazioni vuole effettuare? ");
+							numeroPrenotazioni = Integer.parseInt(scan.nextLine());
+							
+							try {
+								
+								evento1.prenota(numeroPrenotazioni);
+								flag = true;
+								
+							} catch (Exception e) {
+								
+								System.out.println(e.getMessage());	
+								
+							}
+							
+						} catch (NumberFormatException nfe) {
+							
+							System.out.println("Hai inserito un carattere non valido, il valore deve necessariamente essere un numero.");
+							System.out.println(nfe.getMessage());
+							
+						} catch (Exception e) {
+							
+							System.out.println(e.getMessage());
+							
+						}
+						
+					}while(!flag);
 					
-				}
-				
-				try {
+					System.out.println("L'evento presenta ancora " + evento1.postiDisponibili() + " posti disponibili, e conta " + evento1.getPostiPrenotati() + " prenotazioni.");
 					
-					evento1.prenota(dataOdierna, numeroPrenotazioni);
-					flag = true;
+					break;
 					
-				} catch (Exception e) {
+				case 2:
 					
-					System.out.println(e.getMessage());	
+					boolean scelta = false;
+					String conferma;
 					
-				}
-				
-			} catch (NumberFormatException nfe) {
-				
-				System.out.println("Hai inserito un carattere non valido, il valore deve necessariamente essere un numero.");
-				System.out.println(nfe.getMessage());
-				
-			} catch (Exception e) {
-				
-				System.out.println(e.getMessage());
-				
+					do {
+						
+						do {
+							
+							System.out.print("Vuole disdire delle prenotazioni? ");
+							conferma = scan.nextLine();
+						
+							if(!conferma.equalsIgnoreCase("si") && !conferma.equalsIgnoreCase("no"))
+								System.out.println("Rispondi solo Si o No.");
+						
+						}while(!conferma.equalsIgnoreCase("no") && !conferma.equalsIgnoreCase("si"));
+						
+						if(conferma.equalsIgnoreCase("si")) 
+							scelta = true;
+						else if(conferma.equalsIgnoreCase("no"))
+							break;
+							
+							try {
+								
+								System.out.print("Inserisci il numero delle prenotazioni da disdire: ");
+								int prenotazioniDisdette = Integer.parseInt(scan.nextLine());
+								try {
+									
+									evento1.disdici(prenotazioniDisdette);
+									scelta = false;
+									
+								} catch (Exception e) {
+									
+									System.out.println(e.getMessage());
+									
+								}
+								
+							} catch (NumberFormatException nfe) {
+								
+								System.out.println("Hai inserito un carattere non valido, il valore deve necessariamente essere un numero.");
+								System.out.println(nfe.getMessage());	
+								
+							}
+							
+						}while(scelta);
+					
+					System.out.println("L'evento presenta ancora " + evento1.postiDisponibili() + " posti disponibili, e conta " + evento1.getPostiPrenotati() + " prenotazioni.");
+					
+					break;
+					
+				case 3:
+					
+					chiudiProgramma = true;
+					break;
+					
 			}
 			
-		}while(!flag);
+	}while(!chiudiProgramma);
 		
-		System.out.println("L'evento presenta ancora " + evento1.postiDisponibili() + " posti disponibili, e conta " + evento1.getPostiPrenotati() + " prenotazioni.");
-		
-		boolean scelta = false;
-		String conferma;
-		
-		do {
-			
-			System.out.print("Vuole disdire delle prenotazioni? ");
-			conferma = scan.nextLine();
-		
-			if(!conferma.equalsIgnoreCase("si") && !conferma.equalsIgnoreCase("no"))
-				System.out.println("Rispondi solo Si o No.");
-		
-		}while(!conferma.equalsIgnoreCase("no") && !conferma.equalsIgnoreCase("si"));
-		
-		if(conferma.equalsIgnoreCase("si"))
-			scelta = true;
-		
-		do {
-			
-			try {
-				
-				System.out.print("Inserisci il numero delle prenotazioni da disdire: ");
-				int prenotazioniDisdette = Integer.parseInt(scan.nextLine());
-				try {
-					
-					evento1.disdici(dataOdierna, prenotazioniDisdette);
-					scelta = false;
-					
-				} catch (Exception e) {
-					
-					System.out.println(e.getMessage());
-					
-				}
-				
-			} catch (NumberFormatException nfe) {
-				
-				System.out.println("Hai inserito un carattere non valido, il valore deve necessariamente essere un numero.");
-				System.out.println(nfe.getMessage());		
-			}
-			
-		}while(scelta);
-		
-		System.out.println("L'evento presenta ancora " + evento1.postiDisponibili() + " posti disponibili, e conta " + evento1.getPostiPrenotati() + " prenotazioni.");
 		
 		scan.close();
 		
