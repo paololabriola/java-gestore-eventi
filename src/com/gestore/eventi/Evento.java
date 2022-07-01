@@ -107,25 +107,25 @@ public class Evento {
 		
 	}
 	//Metodo di prenotazione di un biglietto per l'evento in una certa data.
-	public void prenota(LocalDate data) throws IllegalArgumentException {
+	public void prenota(LocalDate data, int prenotazioni) throws IllegalArgumentException {
 		//Controllo della data qualora fosse una data null o passata.
 		validaData(data);
 		//Controllo della data affinché non sia una data successiva all'evento.
 		if(data.isAfter(dataEvento))
 			throw new IllegalArgumentException("L'evento è già passato, non è possibile prenotare un posto per questo evento.");
 		//Controllo disponibilità di posti prenotabili.
-		if(postiPrenotati == postiTotali) 
-			throw new IllegalArgumentException("Non ci sono più posti disponibili per questo evento.");
+		if(prenotazioni > postiTotali) 
+			throw new IllegalArgumentException("Non ci sono abbastanza posti per questo evento, i posti disponibili sono solo " + postiDisponibili());
 		else {
 			//Stampa in caso di prenotazione riuscita con successo e incremento della variabile che tiene il conto dei posti prenotati.
-			System.out.println("Prenotazione avvenuta con successo.");
-			postiPrenotati++; 
+			System.out.println("Prenotazioni avvenute con successo.");
+			postiPrenotati += prenotazioni; 
 			
 		}
 		
 	}
 	//Metodo di disdetta di un biglietto per l'evento in una certa data.
-	public void disdici(LocalDate data) throws IllegalArgumentException {
+	public void disdici(LocalDate data, int prenotazioniDisdette) throws IllegalArgumentException {
 		//Controllo della data qualora fosse una data null o passata.
 		validaData(data);
 		//Controllo della data affinché non sia una data successiva all'evento.
@@ -134,15 +134,18 @@ public class Evento {
 		//Controllo nel caso in cui non ci fossero prenotazioni da disdire.
 		if(postiPrenotati == 0) 
 			throw new IllegalArgumentException("Non sono state ancora effettuate prenotazioni per questo evento, non è possibile disdirne alcuna.");
+		//Controllo qualora le prenotazioni disdette siano maggiori delle prenotazioni effettuate con relativo messaggio di errore.
+		else if(prenotazioniDisdette > postiPrenotati) 
+			throw new IllegalArgumentException("Non ci sono abbastanza prenotazioni per questo evento, le prenotazioni disdicibili sono solo " + postiPrenotati);
 		else {
 			//Stampa in caso di disdetta riuscita  con successo e decremento della variabile che tiene il conto dei posti prenotati.
-			System.out.println("Biglietto disdetto con successo.");
-			postiPrenotati--; 
+			System.out.println("Biglietti disdetti con successo.");
+			postiPrenotati -= prenotazioniDisdette; 
 			
 		}
 		
 	}
-	
+	//Calcolo posti disponibili.
 	public int postiDisponibili() {
 		
 		return postiTotali - postiPrenotati;

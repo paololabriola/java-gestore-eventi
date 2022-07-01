@@ -88,7 +88,16 @@ public class Main {
 					
 				}
 				
-				flag = true;
+				try {
+					
+					evento1.prenota(dataOdierna, numeroPrenotazioni);
+					flag = true;
+					
+				} catch (Exception e) {
+					
+					System.out.println(e.getMessage());	
+					
+				}
 				
 			} catch (NumberFormatException nfe) {
 				
@@ -103,26 +112,9 @@ public class Main {
 			
 		}while(!flag);
 		
-		
-		for(int i = 0; i < numeroPrenotazioni; i++) {
-			
-			try {
-				
-				evento1.prenota(dataOdierna);
-				
-			} catch (Exception e) {
-				
-				System.out.println(e.getMessage());
-				
-			}
-			
-			
-		}
-		
 		System.out.println("L'evento presenta ancora " + evento1.postiDisponibili() + " posti disponibili, e conta " + evento1.getPostiPrenotati() + " prenotazioni.");
 		
 		boolean scelta = false;
-		int prenotazioniDisdette = 0;
 		String conferma;
 		
 		do {
@@ -138,24 +130,16 @@ public class Main {
 		if(conferma.equalsIgnoreCase("si"))
 			scelta = true;
 		
-		if(scelta) {
+		do {
 			
 			try {
 				
-				System.out.println("Inserisci il numero delle prenotazioni da disdire: ");
-				prenotazioniDisdette = Integer.parseInt(scan.nextLine());
-				
-			} catch (NumberFormatException nfe) {
-				
-				System.out.println("Hai inserito un carattere non valido, il valore deve necessariamente essere un numero.");
-				System.out.println(nfe.getMessage());		
-			}
-			
-			for(int i = 0; i < prenotazioniDisdette; i++) {
-				
+				System.out.print("Inserisci il numero delle prenotazioni da disdire: ");
+				int prenotazioniDisdette = Integer.parseInt(scan.nextLine());
 				try {
 					
-					evento1.disdici(dataOdierna);
+					evento1.disdici(dataOdierna, prenotazioniDisdette);
+					scelta = false;
 					
 				} catch (Exception e) {
 					
@@ -163,9 +147,13 @@ public class Main {
 					
 				}
 				
+			} catch (NumberFormatException nfe) {
+				
+				System.out.println("Hai inserito un carattere non valido, il valore deve necessariamente essere un numero.");
+				System.out.println(nfe.getMessage());		
 			}
 			
-		}
+		}while(scelta);
 		
 		System.out.println("L'evento presenta ancora " + evento1.postiDisponibili() + " posti disponibili, e conta " + evento1.getPostiPrenotati() + " prenotazioni.");
 		
